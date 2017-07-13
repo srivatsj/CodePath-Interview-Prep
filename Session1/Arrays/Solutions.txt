@@ -1,0 +1,86 @@
+//Min Steps in Infinite Grid
+public class Solution {
+    // X and Y co-ordinates of the points in order.
+    // Each point is represented by (X.get(i), Y.get(i))
+    public int coverPoints(ArrayList<Integer> X, ArrayList<Integer> Y) {
+        int answer = 0;
+        int prevX = X.get(0);
+        int preY = Y.get(0);
+        
+        for(int i =1; i < X.size(); i++)
+        {
+            answer = answer + Math.max(Math.abs(prevX - X.get(i)), Math.abs(preY - Y.get(i)));
+            prevX = X.get(i);
+            preY = Y.get(i);
+        }
+        
+        return answer;
+    }
+}
+
+//Hotel Bookings Possible
+public class Solution {
+    public boolean hotel(ArrayList<Integer> arrive, ArrayList<Integer> depart, int K) {
+        
+        List<Pair> l = new ArrayList();
+        
+        for(Integer i : arrive) {
+            l.add(new Pair(i, 1));
+        }
+        
+        for(Integer i : depart) {
+            l.add(new Pair(i, 0));
+        }
+        
+        Collections.sort(l, new Comparator<Pair>() {
+           
+           public int compare(Pair p1, Pair p2) {
+               if(p1.time != p2.time)
+                    return p1.time - p2.time;
+                    
+                return p1.type - p2.type;
+           }
+            
+        });
+        
+        for(Pair p : l) {
+            if(p.type == 1) {
+                K--;
+                if(K < 0) return false; 
+            }
+            else {
+                K++;
+            }
+        }
+        
+        return true;
+    }
+    
+    public class Pair {
+        int time;
+        int type;
+        
+        public Pair(int time, int type) {
+            this.time = time;
+            this.type = type;
+        }
+    }
+}
+
+//Find Duplicate In Array
+public class Solution {
+	// DO NOT MODIFY THE LIST
+	public int repeatedNumber(final List<Integer> a) {
+	
+	    Set<Integer> set = new HashSet();
+	    
+	    for(Integer i : a)
+	    {
+	        if(!set.add(i))
+	            return i;
+	    }
+	    
+	    return -1;
+	}
+}
+
