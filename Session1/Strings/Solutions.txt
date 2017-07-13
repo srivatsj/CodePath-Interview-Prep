@@ -1,0 +1,37 @@
+//Palindrome String
+public class Solution {
+	public int isPalindrome(String a) {
+	    char[] arr = a.toCharArray();
+	    int i = 0 ;
+	    int j = a.length() -1;
+	    
+	    while(i < j) {
+	        
+	        while(i < j && !Character.isLetterOrDigit(arr[i])) i++;
+	        
+	        while(i < j && !Character.isLetterOrDigit(arr[j])) j--;
+	        
+	        if(Character.toLowerCase(arr[i]) != Character.toLowerCase(arr[j])) return 0;
+	        i++;
+	        j--;
+	    }
+	    
+	    return 1;
+	}
+}
+
+//Length Of Last Word
+public class Solution {
+	public int lengthOfLastWord(final String a) {
+	    
+	    int count = 0;
+	    
+	    for(int i=a.length() -1; i>=0; i--) {
+	        
+	        if(a.charAt(i) == ' ' && count > 0) break;
+	        if(a.charAt(i) != ' ')count++;
+	    } 
+	    
+	    return count;
+	}
+}
