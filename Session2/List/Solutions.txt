@@ -1,0 +1,98 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+    public int lPalin(ListNode A) {
+        
+        ListNode head = A;
+        ListNode slow = A;
+        ListNode fast = A;
+        ListNode prev = null;
+        
+        while(fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        ListNode head2 = null;
+        
+        if(fast != null) {
+            head2 = slow.next;
+            slow.next = null;
+        }
+        else {
+            head2 = slow;
+            prev.next = null;
+        }
+        
+       head2 = reverse(head2);
+        
+        while(head2 != null) {
+            if(head2.val != head.val)
+                return 0;
+            head = head.next;
+            head2 = head2.next;
+        }
+        
+        return 1;
+    }
+    
+    private ListNode reverse(ListNode h) {
+        
+        ListNode prev = null;
+        
+        while(h != null) {
+            ListNode tmp = h.next;
+            h.next = prev;
+            prev = h;
+            h = tmp;
+        }
+        
+        return prev;
+    }
+}
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+	public ListNode addTwoNumbers(ListNode a, ListNode b) {
+	    
+	    ListNode dummy = new ListNode(-1);
+	    ListNode h = dummy;
+	    int carry = 0;
+	    
+	    while(a != null || b != null) {
+	        
+	        int sum = (a != null ? a.val : 0) + (b != null ? b.val : 0) + carry;
+	        
+	        if(sum > 9) {
+	            sum = sum % 10;
+	            carry = 1;
+	        }
+	        else
+	            carry = 0;
+	            
+	       h.next = new ListNode(sum);
+	       h = h.next;
+	       a = a != null ? a.next : null;
+	       b = b != null ? b.next : null;
+	    }
+	    
+	    if(carry > 0)
+	        h.next = new ListNode(carry);
+	        
+	   return dummy.next;
+	}
+}
