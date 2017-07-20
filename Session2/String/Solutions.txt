@@ -1,0 +1,171 @@
+public class Solution {
+	public String longestCommonPrefix(ArrayList<String> a) {
+	    
+	    Collections.sort(a, new Comparator<String>() {
+	    
+	        public int compare(String a, String b) {
+	            return a.length() - b.length();
+	        }    
+	        
+	    });
+	    
+	    char[] arr1 = a.get(0).toCharArray();
+	    
+	    for(int i=0; i<arr1.length; i++) {
+	        
+	        for(int j=1; j<a.size(); j++) {
+	            
+	            char val = a.get(j).charAt(i);
+	            
+	            if(val != arr1[i]) {
+	                if(i == 0) return "";
+	                return a.get(0).substring(0, i);
+	            }
+	            
+	        }
+	    }
+	    
+	    return a.get(0);
+	}
+}
+
+public class Solution {
+	public String countAndSay(int a) {
+	    
+	    if(a == 0)
+	        return "";
+	    
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("1");
+	    
+	    while(a > 1) {
+	        
+	        char[] arr = sb.toString().toCharArray();
+	        sb = new StringBuffer();
+	        int count = 1;
+	        char prev = arr[0];
+	        
+	        for(int i=1; i<arr.length; i++) {
+	            
+	            if(arr[i] != prev) {
+	                sb.append(count + "" + prev);
+	                count = 1;
+	                prev = arr[i];
+	            }
+	            else {
+	                count++;
+	            }
+	            
+	        }
+	        sb.append(count + "" + prev);
+	        a--;     
+	    }
+	    
+	    return sb.toString();
+	}
+}
+
+public class Solution {
+	public String reverseWords(String a) {
+	    
+	    int start = 0;
+	    char[] arr = a.toCharArray();
+	    reverse(arr, 0, arr.length -1);
+	    
+	    a = new String(arr);
+	    
+	    StringBuilder sb = new StringBuilder();
+	    
+	    for(int i=0; i<arr.length; i++) {
+	        
+	        if((arr[i] != ' ' && i ==0) || (i > 0 && arr[i-1] == ' ' && arr[i] != ' '))
+	            start = i;
+	            
+	        if(i > 0 && arr[i] == ' ' && arr[i-1] != ' ')
+	        {
+	            String reverse = new StringBuffer(a.substring(start, i)).reverse().toString();
+	            sb.append(reverse + " ");
+	            start = -1;
+	        }
+	    }
+	    
+	    if(start != -1) {
+	        String reverse = new StringBuffer(a.substring(start, arr.length)).reverse().toString();
+	        sb.append(reverse);
+	    }
+	        
+	    return sb.toString();
+	}
+	
+	private void reverse(char[] a, int st, int end) {
+	    while(st < end) {
+	        char tmp = a[st];
+	        a[st] = a[end];
+	        a[end] = tmp;
+	        st++;
+	        end--;
+	    }
+	}
+}
+
+public class Solution {
+	public String addBinary(String a, String b) {
+	    
+	    char[] arr1 = a.toCharArray();
+	    char[] arr2 = b.toCharArray();
+	    
+	    int i = arr1.length -1;
+	    int j = arr2.length -1;
+	    int carry = 0;
+	    StringBuffer sb = new StringBuffer();
+	    
+	    while(i >= 0 || j >=0) {
+	        
+	        int val1 = i >=0 ? arr1[i] - '0' : 0;
+	        int val2 = j >=0 ? arr2[j] - '0' : 0;
+	        int sum = val1 + val2 + carry;
+	        
+	        if(sum > 1) {
+	            sum = sum % 2;
+	            carry = 1;
+	        }
+	        else
+	            carry = 0;
+	            
+	       sb.append(sum);
+	       i--;
+	       j--;
+	    }
+	    
+	    if(carry > 0)
+	        sb.append(carry);
+	        
+	   return sb.reverse().toString();
+	}
+}
+
+import java.math.BigDecimal;
+
+public class Solution {
+	public int compareVersion(String a, String b) {
+	    
+	    String[] arr1 = a.split("\\.");
+	    String[] arr2 = b.split("\\.");
+	    
+	    for(int i=0; i<Math.max(arr1.length, arr2.length); i++) {
+	        
+	        BigDecimal val1 = i < arr1.length ? new BigDecimal(arr1[i]) : new BigDecimal("0");
+	        BigDecimal val2 = i < arr2.length ? new BigDecimal(arr2[i]) : new BigDecimal("0");
+	        
+	        //System.out.println(val1 + " -- " + val2);
+	        
+	        if(val1.compareTo(val2) > 0)
+	            return 1;
+	        else if(val1.compareTo(val2) < 0)
+	            return -1;
+
+	    }
+	    
+	    return 0;
+	}
+}
