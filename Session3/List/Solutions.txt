@@ -1,0 +1,299 @@
+public class Solution {
+	public ListNode deleteDuplicates(ListNode a) {
+	    
+	    ListNode h = a;
+	    
+	    while(a != null && a.next != null) {
+	        
+	        while(a.next != null && a.val == a.next.val)
+	            a.next = a.next.next;
+	        
+	        a = a.next;
+	    }
+	    
+	    return h;
+	}
+}
+
+public class Solution {
+	public ListNode deleteDuplicates(ListNode a) {
+	    
+	    ListNode dummy = new ListNode(-1);
+	    ListNode prev = dummy;
+	    boolean f = true;
+	    
+	    while(a != null) {
+	        int val = a.val;
+	        
+	        while(a.next != null && val == a.next.val) {
+	            f = false;
+	            a = a.next;
+	        }
+	        
+	        if(f) {
+	            prev.next = a;
+	            prev = prev.next;
+	            a = a.next;
+	        }
+	        else {
+	            a = a.next;
+	            prev.next = a;
+	        }
+	        
+	        f = true;
+	    }
+	    
+	    return dummy.next;
+	}
+}
+
+public class Solution {
+	public ListNode mergeTwoLists(ListNode a, ListNode b) {
+	    
+	    ListNode dummy = new ListNode(-1);
+	    ListNode h = dummy;
+	    
+	    while(a != null || b != null) {
+	        int val1 = a != null ? a.val : Integer.MAX_VALUE;
+	        int val2 = b != null ? b.val : Integer.MAX_VALUE;
+	        
+	        if(val1 < val2) {
+	            h.next = a;
+	            a = a != null ? a.next : null;
+	        } else {
+	            h.next = b;
+	            b = b != null ? b.next : null;
+	        }
+	        
+	        h = h.next;
+	    }
+	    
+	    return dummy.next;
+	}
+}
+
+public class Solution {
+	public ListNode removeNthFromEnd(ListNode a, int b) {
+	    
+	    if(a == null)
+	        return a;
+	    
+	    ListNode slow = a;
+	    ListNode fast = a;
+	    ListNode prev = null;
+	    
+	    while(b > 1 && fast != null) {
+	        fast = fast.next;
+	        b--;
+	    }
+	    
+	    if(fast == null) {
+	        ListNode tmp = a.next;
+	        a.next = null;
+	        return tmp;
+	    }
+	    
+	    while(fast.next != null) {
+	        prev = slow;
+	        slow = slow.next;
+	        fast = fast.next;
+	    }
+	    
+	    if(prev == null) {
+	        ListNode tmp = a.next;
+	        a.next = null;
+	        return tmp;
+	    }
+	    
+	    prev.next = prev.next.next;
+	    return a;
+	}
+}
+
+
+public class Solution {
+	public ListNode reorderList(ListNode a) {
+	    
+	    ListNode slow = a;
+	    ListNode fast = a;
+	    ListNode head1 = a;
+	    
+	    while(fast != null && fast.next != null) {
+	        slow = slow.next;
+	        fast = fast.next.next;
+	    }
+	    
+	    ListNode head2 = slow.next;
+	    slow.next = null;
+	    
+	    head2 = reverse(head2);
+	 
+	    while(head2 != null) {
+	        ListNode tmp = head1.next;
+	        ListNode tmp1 = head2.next;
+	        head1.next = head2;
+	        head1.next.next = tmp;
+	        head1 = tmp;
+	        head2 = tmp1;
+	    }   
+	    
+	    return a;
+	}
+	
+	private ListNode reverse(ListNode n) {
+	    
+	    ListNode prev = null;
+	    
+	    while(n != null) {
+	        ListNode tmp = n.next;
+	        n.next = prev;
+	        prev = n;
+	        n = tmp;
+	    }
+	    
+	    return prev;
+	}
+}
+
+public class Solution {
+	public ListNode partition(ListNode a, int b) {
+	    
+	    ListNode dummy1 = new ListNode(-1);
+	    ListNode p1 = dummy1;
+	    ListNode dummy2 = new ListNode(-1);
+	    ListNode p2 = dummy2;
+	    
+	    while(a != null) {
+	        
+	        if(a.val < b) {
+	            p1.next = a;
+	            p1 = p1.next;
+	        }
+	        else {
+	            p2.next = a;
+	            p2 = p2.next;
+	        }
+	        
+	        a = a.next;
+	    }
+	    
+	    p2.next = null;
+	    p1.next = dummy2.next;
+	    return dummy1.next;
+	}
+}
+
+public class Solution {
+	public ListNode sortList(ListNode a) {
+	    
+	    if(a == null || a.next == null) {
+	        return a;
+	    }
+	    ListNode tmp = a;
+	    ListNode mid = findMiddle(tmp);
+	    ListNode h = mid.next;
+	    mid.next = null;
+	    ListNode left = sortList(a);
+	    ListNode right = sortList(h);
+	    
+	    return merge(left, right);
+	}
+	
+	private ListNode findMiddle(ListNode a) {
+	    
+	    ListNode slow = a;
+	    ListNode fast = a;
+	    ListNode prev = null;
+	    
+	    while(fast != null && fast.next != null) {
+	        prev = slow;
+	        slow = slow.next;
+	        fast = fast.next.next;
+	    }
+	    
+	    return prev;
+	}
+	
+	private ListNode merge(ListNode l, ListNode r) {
+	    
+	    ListNode dummy = new ListNode(-1);
+	    ListNode h = dummy;
+	    
+	    while(l != null && r != null) {
+	        
+	        if(l.val < r.val) {
+	            h.next = l;
+	            h = h.next;
+	            l = l.next;
+	        }
+	        else {
+	            h.next = r;
+	            h = h.next;
+	            r = r.next;
+	        }
+	        
+	    }
+	    
+	    if(l != null)
+	        h.next = l;
+	    else if(r != null)
+	        h.next = r;
+	        
+	   return dummy.next;
+	}
+}
+
+public class Solution {
+	public ListNode swapPairs(ListNode a) {
+	    
+	    if(a == null || a.next == null) return a;
+	    
+	    ListNode even = a;
+	    ListNode odd = a.next;
+	    ListNode dummy = new ListNode(-1);
+	    ListNode prev = dummy;
+	    
+	    while(even != null && even.next != null) {
+	        ListNode tmp = odd.next;
+	        odd.next = even;
+	        even.next = tmp;
+	        prev.next = odd;
+	        prev = even;
+	        even = tmp;
+	        odd = (even != null) ? even.next : null;
+	    }
+	    
+	    return dummy.next;
+	}
+}
+
+public class Solution {
+	public ListNode detectCycle(ListNode a) {
+	    
+	    ListNode slow = a;
+	    ListNode fast = a;
+	    boolean flag = false;
+	    
+	    while(fast != null && fast.next != null) {
+	        slow = slow.next;
+	        fast = fast.next.next;
+	        
+	        if(slow == fast)
+	        {
+	            flag = true;
+	            break;
+	        }
+	    }
+	    
+	    if(!flag) return null;
+	    
+	    slow = a;
+	    
+	    while(slow != fast) {
+	        slow = slow.next;
+	        fast = fast.next;
+	    }
+	    
+	    return slow;
+	}
+}
