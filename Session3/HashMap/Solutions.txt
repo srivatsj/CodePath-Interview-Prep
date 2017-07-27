@@ -1,0 +1,210 @@
+public class Solution {
+	public int colorful(int a) {
+	    
+	Set<Integer> set = new HashSet();
+    String val = a + "";
+    
+    for(int len=1; len <=val.length(); len++) {
+        
+        int j = 0;
+        int substr = 0;
+        while(j + len <= val.length()) {
+            substr = Integer.parseInt(val.substring(j, j + len));
+            
+           int prod = 1;
+           while(substr > 0) {
+              prod *= substr % 10;
+              substr /= 10;
+            }
+            
+            if(!set.add(prod))
+                return 0;
+            j++;
+        }
+    }
+    
+    return 1;
+	}
+}
+
+
+public class Solution {
+    public ArrayList<Integer> lszero(ArrayList<Integer> a) {
+        
+        Map<Integer, Integer> map = new HashMap();
+        int sum = 0;
+        ArrayList<Integer> sol = new ArrayList<Integer>();
+        int max = -1;
+        
+        for(int i=0; i<a.size(); i++) {
+            sum += a.get(i);
+            
+            if(sum == 0) {
+                sol = new ArrayList<Integer>(Arrays.asList(0, i));
+                max = i;
+            }
+            
+            if(map.containsKey(sum)) {
+                
+                int st = map.get(sum) + 1;
+                int diff = i - st;
+                if(diff > max || (diff == max && st < sol.get(0))) {
+                    max = diff;
+                    sol = new ArrayList<Integer>(Arrays.asList(st, i));
+                }
+
+            } else 
+                map.put(sum, i);
+        }
+        
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if(sol.size() > 0) {
+            for(int k=sol.get(0); k<=sol.get(1); k++) {
+                res.add(a.get(k));
+            }
+        }
+        return res;
+    }
+}
+
+
+public class Solution {
+	public ArrayList<ArrayList<Integer>> fourSum(ArrayList<Integer> a, int b) {
+	    
+	    Collections.sort(a);
+	    Integer[] num = new Integer[a.size()];
+        num = a.toArray(num);
+	    ArrayList<ArrayList<Integer>> res = new ArrayList();
+	    
+	    for(int i=0; i<num.length-3; i++) {
+	        
+	        if(i > 0 && num[i] == num[i-1]) continue;
+	        for(int j=i+1; j<num.length-2; j++) {
+	            
+	            if(j > i+1 && num[j] == num[j-1]) continue;
+	            
+	            int l = j+1;
+	            int r = num.length -1;
+	            int target=b-num[i]-num[j];
+				
+	            while(l < r) {
+	                int sum = num[l] + num[r];
+	                if(sum == target) {
+	                    ArrayList<Integer> sol = new ArrayList<Integer>();
+	                    sol.add(num[i]);
+	                    sol.add(num[j]);
+	                    sol.add(num[l]);
+	                    sol.add(num[r]);
+	                    res.add(sol);
+	                    l++;
+	                    r--;
+	                    
+	                    while(l < r && num[l] == num[l-1]) l++;
+	                    //while(l < r && a.get(r) == a.get(r+1)) r--;
+	                }
+	                else if(sum > target) {
+	                    r--;
+	                }
+	                else {
+	                    l++;
+	                }
+	            }
+	            
+	        }
+	        
+	    }
+	    
+	    return res;
+	    
+	}
+}
+
+public class Solution {
+	public ArrayList<Integer> findSubstring(String a, final List<String> b) {
+	
+	    Map<String, Integer> map = new HashMap();
+	    ArrayList<Integer> sol = new ArrayList<Integer>();
+	    
+	    if(b.size() == 0)
+	        return sol;
+	    
+	    for(String s : b) {
+	        
+	        if(!map.containsKey(s))
+	            map.put(s, 0);
+	       
+	        map.put(s, map.get(s) + 1);
+	    }
+	    
+	    int len = b.get(0).length();
+	    //System.out.println(a.length());
+	    
+	    for(int i=0; i<=a.length()-len; i++) {
+	        
+	        Map<String, Integer> map1 = new HashMap(map);
+	        
+	        for(int j=i; j+len<=a.length(); j=j+len) {
+                
+                //System.out.println("i " + i + " j " + j);
+                String str = a.substring(j, j+len);
+                //System.out.println(str);
+                
+                if(map1.containsKey(str)) {
+                    int ct = map1.get(str);
+                    if(ct == 1) {
+                        map1.remove(str);
+                    }
+                    else {
+                        map1.put(str, ct -1);
+                    }
+                    
+                    if(map1.size() == 0) {
+                        sol.add(i);
+                        break;
+                    }
+                }
+                else {
+                    break;
+                }
+	        }
+	    }
+	    
+	    return sol;
+	}
+}
+
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        
+        RandomListNode dummy = new RandomListNode(-1);
+        RandomListNode sol = dummy;
+        Map<RandomListNode, RandomListNode> map = new HashMap();
+        RandomListNode n = head;
+        
+        while(n != null) {
+            sol.next = new RandomListNode(n.label);
+            sol = sol.next;
+            map.put(n, sol);
+            n = n.next;
+        }
+        
+        while(head != null) {
+            if(head.random != null) {
+                map.get(head).random = map.get(head.random);
+            }
+            head = head.next;
+        }
+        
+        return dummy.next;
+    }
+}
+
+
