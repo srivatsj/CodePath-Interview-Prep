@@ -1,0 +1,61 @@
+public class Solution {
+	public ArrayList<ArrayList<Integer>> combinationSum(ArrayList<Integer> a, int b) {
+	
+	    ArrayList<ArrayList<Integer>> sol = new ArrayList<ArrayList<Integer>>();
+	    ArrayList<Integer> part = new ArrayList<Integer>();
+	    Collections.sort(a);
+	    sum(a, b, sol, part, 0);
+	    return sol;
+	}
+	
+	private void sum(ArrayList<Integer> a, int b, ArrayList<ArrayList<Integer>> sol, ArrayList<Integer> part, int idx) {
+	    
+	    if(b == 0) {
+	        sol.add(new ArrayList(part));
+	        return;
+	    }
+	    
+	    if(idx >= a.size()) {
+	        return;
+	    }    
+	    
+	    for(int i=idx; i<a.size(); i++) {
+	        if(a.get(i) > b || b < 0) break;
+	        if(i > 0 && a.get(i) == a.get(i-1)) continue;
+	        
+	        part.add(a.get(i));
+	        sum(a, b - a.get(i), sol, part, i);
+	        part.remove(part.size() -1);
+	    }
+	}
+}
+
+public class Solution {
+	public ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> a) {
+	    
+	    ArrayList<ArrayList<Integer>> sol = new ArrayList<ArrayList<Integer>>();
+	    boolean[] used = new boolean[a.size()];
+	    ArrayList<Integer> part = new ArrayList<Integer>();
+	    perm(a, sol, used, 0, part);
+	    return sol;
+	}
+	
+	private void perm(ArrayList<Integer> a, ArrayList<ArrayList<Integer>> sol, boolean[] used, int idx, ArrayList<Integer> part) {
+        
+        if(part.size() == a.size()) {
+            sol.add(new ArrayList(part));
+            return;
+        }	    
+        
+        for(int i=0; i<a.size(); i++) {
+            if(used[i]) continue;
+            
+            used[i] = true;
+            part.add(a.get(i));
+            perm(a, sol, used, i + 1, part);
+            used[i] = false;
+            part.remove(part.size() -1);
+        }
+	    
+	}
+}
