@@ -1,0 +1,98 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+	public ListNode mergeKLists(ArrayList<ListNode> a) {
+	    
+	    PriorityQueue<ListNode> pq = new PriorityQueue(new Comparator<ListNode>() {
+	       
+	       public int compare(ListNode l1, ListNode l2) {
+	           return l1.val - l2.val;
+	       }
+	        
+	    });
+	    
+	    for(int i=0; i<a.size(); i++) {
+	        pq.add(a.get(i));
+	    }
+	    
+	    ListNode dummy = new ListNode(-1);
+	    ListNode head = dummy;
+	    
+	    while(!pq.isEmpty()) {
+	        
+	        ListNode n = pq.poll();
+	        head.next = n;
+	        head = head.next;
+	        
+	        if(n.next != null)
+	            pq.add(n.next);
+	    }
+	    
+	    return dummy.next;
+	}
+}
+
+public class Solution {
+    public int nchoc(int A, ArrayList<Integer> B) {
+        
+        PriorityQueue<Integer> pq = new PriorityQueue(B.size(), Collections.reverseOrder());
+        
+        for(Integer i : B) {
+            pq.add(i);
+        }
+        
+        int mod = (int)Math.pow(10, 9) + 7;
+        int ans = 0;
+        
+        while(A > 0) {
+            
+            int val = pq.poll();
+            int inter = val % mod;
+            ans = (ans + inter) % mod;
+            pq.add(val/2);
+            A--;
+        }
+        
+        return (int)(ans % mod);
+    }
+}
+
+public class Solution {
+    public ArrayList<Integer> dNums(ArrayList<Integer> A, int B) {
+        
+        ArrayList<Integer> sol = new ArrayList<Integer>();
+        if(B > A.size())
+            return sol;
+        
+        Map<Integer, Integer> map = new HashMap();
+            
+        for(int i=0; i<A.size(); i++)
+        {
+            int val = A.get(i);
+            
+            if(!map.containsKey(val))
+                map.put(val, 1);
+            else
+                map.put(val, map.get(val) + 1);
+                
+            if(i >= B -1) {
+                sol.add(map.size());
+                val = A.get((i +1) - B);
+                int ct = map.get(val);
+                
+                if(ct == 1)
+                    map.remove(val);
+                else
+                    map.put(val, map.get(val) - 1);
+            }
+        }
+        
+        return sol;
+    }
+}
